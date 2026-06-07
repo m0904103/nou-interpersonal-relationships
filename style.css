@@ -581,3 +581,32 @@ body {
         padding-right: 10px;
     }
 }
+
+/* New Section Divider Styles */
+.nav-section-title {
+    font-size: 0.8rem;
+    color: var(--highlight);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 15px 20px 5px;
+    font-weight: 700;
+}
+
+.section-divider {
+    padding: 0 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-divider h2 {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
