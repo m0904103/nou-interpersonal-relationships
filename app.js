@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let fullText = q.question + "。 ";
             q.items.forEach(item => {
                 fullText += item.title + "。 ";
-                if (item.detail) fullText += "課本原文詳解：" + item.detail + "。 ";
+                
             });
             
             header.innerHTML = `
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerHeader.className = 'answer-header';
                 
                 let itemText = item.title + "。 ";
-                if (item.detail) itemText += "課本原文詳解：" + item.detail;
+                
                 
                 answerHeader.innerHTML = `
                     <div class="answer-header-group">
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             q.items.forEach((item, index) => {
                 let itemText = item.title + "。 ";
-                if (item.detail) itemText += "課本原文詳解：" + item.detail;
+                
                 document.getElementById(`tts-i-${q.id}-${index}`).addEventListener('click', (e) => {
                     e.stopPropagation();
                     speakText(itemText, document.getElementById(`tts-i-${q.id}-${index}`).querySelector('i'));
