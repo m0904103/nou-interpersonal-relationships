@@ -34,43 +34,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Build Playlist ---
-    function buildPlaylist(data) {
-        playerState.playlist = data.map(q => {
+        function buildPlaylist(qa, gloss) {
+        playerState.playlist = [];
+        
+        qa.forEach(q => {
             let chunks = [];
-            
-            // Clean question number string logic
             let qNumStr = q.id;
             let titleText = q.question.replace(/^\d+\.\s*/, '');
-            
-            // Chunk 1: Question
-            chunks.push({
-                text: `第${qNumStr}題：${titleText}`,
-                display: `第${qNumStr}題：${titleText}`,
-                cardId: `q-${q.id}`
-            });
-            
-            // Chunks for items
+            chunks.push({ text: `第${qNumStr}題：${titleText}`, display: `問答題：第${qNumStr}題`, cardId: `q-${q.id}` });
             q.items.forEach((item, index) => {
                 let chunkText = `第${index + 1}點：${item.title}。`;
-                if (item.detail) {
-                    chunkText += `。課本解釋：${item.detail}`;
-                }
-                chunks.push({
-                    text: chunkText,
-                    display: `第${qNumStr}題 - 第${index + 1}點`,
-                    cardId: `q-${q.id}`,
-                    answerId: `ans-${q.id}-${index}`
-                });
+                if (item.detail) chunkText += `。課本解釋：${item.detail}`;
+                chunks.push({ text: chunkText, display: `第${qNumStr}題 - 第${index + 1}點`, cardId: `q-${q.id}`, answerId: `ans-${q.id}-${index}` });
             });
-            
-            return {
-                id: q.id,
-                chunks: chunks
-            };
+            playerState.playlist.push({ id: q.id, chunks: chunks });
+        });
+
+        gloss.forEach(q => {
+            let chunks = [];
+            let qNumStr = q.id.replace('G', '');
+            let titleText = q.question.replace(/^\d+\.\s*/, '');
+            chunks.push({ text: `解釋名詞第${qNumStr}題：${titleText}`, display: `解釋名詞：第${qNumStr}題`, cardId: `q-${q.id}` });
+            q.items.forEach((item, index) => {
+                let chunkText = `${item.title}：${item.detail}`;
+                chunks.push({ text: chunkText, display: `解釋名詞 - ${item.title}`, cardId: `q-${q.id}`, answerId: `ans-${q.id}-${index}` });
+            });
+            playerState.playlist.push({ id: q.id, chunks: chunks });
         });
     }
 
-    // --- Audio Player Logic ---
+// --- Audio Player Logic ---
     function stopAudio() {
         if (window.speechSynthesis.speaking) {
             window.speechSynthesis.cancel();
@@ -218,65 +211,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Render Functions ---
-    function renderNavigation(data) {
-        navList.innerHTML = '';
-        data.forEach((q, index) => {
+        function renderNavigation(data, containerId, prefix) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        data.forEach((q, idx) => {
             const li = document.createElement('li');
             li.className = 'nav-item';
-            
             const a = document.createElement('a');
             a.className = 'nav-link';
             a.href = `#q-${q.id}`;
-            a.textContent = `第 ${q.id} 題`;
+            a.textContent = `${prefix} ${q.id.replace('G','')} 題`;
             
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Play this specific question if clicked
-                playerState.currentQIndex = index;
-                playerState.currentChunkIndex = 0;
-                if(playerState.isPlaying) playChunk();
-                else playerStatus.textContent = `準備播放：第${q.id}題`;
-                
+                let playlistIdx = playerState.playlist.findIndex(item => item.id === q.id);
+                if(playlistIdx !== -1) {
+                    playerState.currentQIndex = playlistIdx;
+                    playerState.currentChunkIndex = 0;
+                    if(playerState.isPlaying) playChunk();
+                    else playerStatus.textContent = `準備播放：${q.question}`;
+                }
                 document.getElementById(`q-${q.id}`).scrollIntoView({ behavior: 'smooth' });
                 document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
                 a.classList.add('active');
                 if (window.innerWidth <= 1024) sidebar.classList.remove('open');
             });
-            
             li.appendChild(a);
-            navList.appendChild(li);
+            container.appendChild(li);
         });
     }
 
-    function renderContent(data) {
-        contentWrapper.innerHTML = '';
-        
-        if (data.length === 0) {
-            contentWrapper.innerHTML = '<div class="empty-state"><h3>找不到相關題目</h3></div>';
-            return;
-        }
-
+    function renderContent(data, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        if (data.length === 0) return;
         data.forEach(q => {
             const card = document.createElement('article');
             card.className = 'question-card';
             card.id = `q-${q.id}`;
-            
             const header = document.createElement('div');
             header.className = 'card-header';
             header.innerHTML = `<h2 class="card-title">${q.question}</h2>`;
             card.appendChild(header);
-            
             const answersList = document.createElement('div');
             answersList.className = 'answers-list';
-            
             q.items.forEach((item, index) => {
                 const answerItem = document.createElement('div');
                 answerItem.className = 'answer-item';
                 answerItem.id = `ans-${q.id}-${index}`;
-                
                 const answerHeader = document.createElement('div');
                 answerHeader.className = 'answer-header';
-                
                 answerHeader.innerHTML = `
                     <div class="answer-header-group">
                         <div class="bullet-title">
@@ -286,27 +270,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 `;
-                
                 const answerBody = document.createElement('div');
                 answerBody.className = 'answer-body';
-                
                 let bodyContent = '';
                 if (item.detail) {
                     bodyContent = `
                         <div class="answer-content">
-                            <span class="textbook-badge"><i class="fa-solid fa-book"></i> 課本原文詳解</span>
-                            <p class="detail-text">${item.detail}</p>
-                        </div>
-                    `;
-                } else {
-                    bodyContent = `
-                        <div class="answer-content">
-                            <p class="detail-text" style="opacity: 0.5; font-style: italic;">（此項目課本無進一步解釋）</p>
+                            <span class="textbook-badge"><i class="fa-solid fa-book"></i> 詳細解釋</span>
+                            <p class="detail-text">${item.detail.replace(/\\n/g, '<br>')}</p>
                         </div>
                     `;
                 }
                 answerBody.innerHTML = bodyContent;
-                
                 answerHeader.addEventListener('click', () => {
                     const isActive = answerItem.classList.contains('active');
                     if (!isActive) {
@@ -317,36 +292,41 @@ document.addEventListener('DOMContentLoaded', () => {
                         answerBody.style.maxHeight = null;
                     }
                 });
-                
                 answerItem.appendChild(answerHeader);
                 answerItem.appendChild(answerBody);
                 answersList.appendChild(answerItem);
             });
-            
             card.appendChild(answersList);
-            contentWrapper.appendChild(card);
+            container.appendChild(card);
         });
-
-        if (document.querySelector('.nav-link')) {
-            document.querySelector('.nav-link').classList.add('active');
-        }
         
-        // Ensure space for the global player at the bottom
-        contentWrapper.style.paddingBottom = "100px";
+        if(containerId === 'glossaryWrapper') {
+            container.style.paddingBottom = "100px";
+        }
     }
 
     // --- Search Logic ---
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        
         if (!query) {
-            renderNavigation(qaData);
-            renderContent(qaData);
-            buildPlaylist(qaData);
+            renderNavigation(qaData, 'navList', '第');
+            renderNavigation(glossaryData, 'glossaryNavList', '第');
+            renderContent(qaData, 'contentWrapper');
+            renderContent(glossaryData, 'glossaryWrapper');
+            buildPlaylist(qaData, glossaryData);
             return;
         }
 
-        const filteredData = qaData.filter(q => {
+        const filteredQA = qaData.filter(q => {
+            if (q.question.toLowerCase().includes(query)) return true;
+            for (let item of q.items) {
+                if (item.title.toLowerCase().includes(query)) return true;
+                if (item.detail && item.detail.toLowerCase().includes(query)) return true;
+            }
+            return false;
+        });
+        
+        const filteredGlossary = glossaryData.filter(q => {
             if (q.question.toLowerCase().includes(query)) return true;
             for (let item of q.items) {
                 if (item.title.toLowerCase().includes(query)) return true;
@@ -355,19 +335,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         });
 
-        renderNavigation(filteredData);
-        renderContent(filteredData);
-        buildPlaylist(filteredData);
+        renderNavigation(filteredQA, 'navList', '第');
+        renderNavigation(filteredGlossary, 'glossaryNavList', '第');
+        renderContent(filteredQA, 'contentWrapper');
+        renderContent(filteredGlossary, 'glossaryWrapper');
+        buildPlaylist(filteredQA, filteredGlossary);
         stopAudio();
     });
 
     // --- Initial Render ---
-    if (typeof qaData !== 'undefined') {
-        renderNavigation(qaData);
-        renderContent(qaData);
-        buildPlaylist(qaData);
+    if (typeof qaData !== 'undefined' && typeof glossaryData !== 'undefined') {
+        renderNavigation(qaData, 'navList', '第');
+        renderNavigation(glossaryData, 'glossaryNavList', '第');
+        renderContent(qaData, 'contentWrapper');
+        renderContent(glossaryData, 'glossaryWrapper');
+        buildPlaylist(qaData, glossaryData);
     } else {
-        contentWrapper.innerHTML = '<div class="empty-state"><h3>錯誤：找不到 data.js 資料</h3></div>';
+        document.getElementById('contentWrapper').innerHTML = '<div class="empty-state"><h3>錯誤：找不到資料</h3></div>';
     }
 
 });
