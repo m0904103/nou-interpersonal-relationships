@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>人際關係與協商 (純朗讀標題版)</title>
+    <title>人際關係與協商 (自動伴讀版)</title>
     <link rel="stylesheet" href="style.css?v=3">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,9 +52,30 @@
                 <!-- Question Cards will be dynamically generated here -->
             </div>
         </main>
+        <!-- Global Audio Player -->
+        <div class="global-player">
+            <div class="player-info">
+                <span id="playerStatus">準備就緒</span>
+            </div>
+            <div class="player-controls">
+                <button class="player-btn loop-toggle" id="loopBtn" title="切換循環模式">
+                    <i class="fa-solid fa-repeat"></i>
+                </button>
+                <button class="player-btn" id="prevBtn" title="上一題">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button class="player-btn play-pause-btn" id="playBtn" title="播放 / 暫停">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+                <button class="player-btn" id="nextBtn" title="下一題">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <script src="data.js?v=3"></script>
-    <script src="app.js?v=3"></script>
+    <script src="data.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+
 </body>
 </html>

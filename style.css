@@ -472,25 +472,8 @@ body {
     }
 }
 
-.tts-btn {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--accent-color);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-left: auto;
-    flex-shrink: 0;
-}
-.tts-btn:hover {
-    background: var(--accent-color);
-    color: white;
-}
+
+
 .card-title-group {
     display: flex;
     justify-content: space-between;
@@ -502,4 +485,99 @@ body {
     align-items: center;
     gap: 12px;
     flex: 1;
+}
+
+/* Global Player */
+.global-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.player-info {
+    font-size: 0.9rem;
+    color: var(--highlight);
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.player-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.player-btn:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.play-pause-btn {
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.play-pause-btn:hover {
+    background: var(--accent-hover);
+    color: white;
+}
+
+.loop-toggle.single-loop {
+    color: var(--highlight);
+}
+
+/* Highlight effects */
+.highlight-card {
+    border-color: var(--highlight) !important;
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.2) !important;
+}
+
+.highlight-answer {
+    border-color: var(--highlight) !important;
+    background: rgba(20, 184, 166, 0.05) !important;
+}
+.highlight-answer .answer-header {
+    background: rgba(20, 184, 166, 0.1) !important;
+}
+
+@media (max-width: 1024px) {
+    .global-player {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
