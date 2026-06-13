@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const loopBtn = document.getElementById('loopBtn');
+    const speedBtn = document.getElementById('speedBtn');
     const playerStatus = document.getElementById('playerStatus');
     const skeletonToggleBtn = document.getElementById('skeletonToggleBtn');
 
@@ -20,8 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChunkIndex: 0,
         isPlaying: false,
         loopMode: 'all', // 'all' or 'single'
+        playbackSpeed: 1.0,
         utterance: null
     };
+
+    // --- Speed Toggle ---
+    const speeds = [1.0, 1.25, 1.5, 2.0];
+    let speedIndex = 0;
+    speedBtn.addEventListener('click', () => {
+        speedIndex = (speedIndex + 1) % speeds.length;
+        playerState.playbackSpeed = speeds[speedIndex];
+        speedBtn.innerHTML = `<span style="font-weight:700; font-size:0.9rem;">${playerState.playbackSpeed.toFixed(1)}x</span>`;
+        
+        if (playerState.isPlaying && playerState.utterance) {
+            // Restart current chunk with new speed
+            stopAudio();
+            playerState.isPlaying = true;
+            playChunk();
+        }
+    });
 
     // --- Skeleton Mode Toggle ---
     skeletonToggleBtn.addEventListener('click', () => {
@@ -201,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         playerState.utterance = new SpeechSynthesisUtterance(textToSpeak);
         playerState.utterance.lang = 'zh-TW';
-        playerState.utterance.rate = 1.0;
+        playerState.utterance.rate = playerState.playbackSpeed;
 
         playerState.utterance.onend = () => {
             if (playerState.isPlaying) {

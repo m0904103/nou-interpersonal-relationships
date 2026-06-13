@@ -386,15 +386,11 @@ body {
 }
 
 /* Skeleton Mode */
-body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) .answer-body {
+body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary):not(.active) .answer-body {
     display: none !important;
 }
-body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) .toggle-icon {
+body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary):not(.active) .toggle-icon {
     display: none !important;
-}
-body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) {
-    cursor: default;
-    pointer-events: none;
 }
 
 /* Skeleton Toggle Button */
