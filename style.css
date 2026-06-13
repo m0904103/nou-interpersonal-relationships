@@ -386,13 +386,13 @@ body {
 }
 
 /* Skeleton Mode */
-body.skeleton-mode .answer-item:not(.is-mnemonic) .answer-body {
+body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) .answer-body {
     display: none !important;
 }
-body.skeleton-mode .answer-item:not(.is-mnemonic) .toggle-icon {
+body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) .toggle-icon {
     display: none !important;
 }
-body.skeleton-mode .answer-item:not(.is-mnemonic) {
+body.skeleton-mode .answer-item:not(.is-mnemonic):not(.is-glossary) {
     cursor: default;
     pointer-events: none;
 }

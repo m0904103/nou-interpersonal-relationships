@@ -45,18 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Build Playlist ---
-        function buildPlaylist(qa, gloss) {
+    function buildPlaylist(qa, gloss) {
         playerState.playlist = [];
         
         qa.forEach(q => {
             let chunks = [];
             let qNumStr = q.id;
             let titleText = q.question.replace(/^\d+\.\s*/, '');
-            chunks.push({ text: `第${qNumStr}題：${titleText}`, display: `問答題：第${qNumStr}題`, cardId: `q-${q.id}` });
+            chunks.push({ 
+                isHeader: true,
+                text: `第${qNumStr}題：${titleText}`, 
+                display: `問答題：第${qNumStr}題`, 
+                cardId: `q-${q.id}` 
+            });
             q.items.forEach((item, index) => {
-                let chunkText = `第${index + 1}點：${item.title}。`;
-                if (item.detail) chunkText += `。課本解釋：${item.detail}`;
-                chunks.push({ text: chunkText, display: `第${qNumStr}題 - 第${index + 1}點`, cardId: `q-${q.id}`, answerId: `ans-${q.id}-${index}` });
+                let cTitle = `第${index + 1}點：${item.title}。`;
+                let cDetail = item.detail ? `。課本解釋：${item.detail}` : '';
+                chunks.push({ 
+                    isHeader: false,
+                    titleText: cTitle,
+                    detailText: cDetail,
+                    isMnemonic: item.title.includes('背誦口訣'),
+                    isGlossary: false,
+                    display: `第${qNumStr}題 - 第${index + 1}點`, 
+                    cardId: `q-${q.id}`, 
+                    answerId: `ans-${q.id}-${index}` 
+                });
             });
             playerState.playlist.push({ id: q.id, chunks: chunks });
         });
@@ -65,10 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
             let chunks = [];
             let qNumStr = q.id.replace('G', '');
             let titleText = q.question.replace(/^\d+\.\s*/, '');
-            chunks.push({ text: `解釋名詞第${qNumStr}題：${titleText}`, display: `解釋名詞：第${qNumStr}題`, cardId: `q-${q.id}` });
+            chunks.push({ 
+                isHeader: true,
+                text: `解釋名詞第${qNumStr}題：${titleText}`, 
+                display: `解釋名詞：第${qNumStr}題`, 
+                cardId: `q-${q.id}` 
+            });
             q.items.forEach((item, index) => {
-                let chunkText = `${item.title}：${item.detail}`;
-                chunks.push({ text: chunkText, display: `解釋名詞 - ${item.title}`, cardId: `q-${q.id}`, answerId: `ans-${q.id}-${index}` });
+                let cTitle = `${item.title}：`;
+                let cDetail = item.detail || '';
+                chunks.push({ 
+                    isHeader: false,
+                    titleText: cTitle,
+                    detailText: cDetail,
+                    isMnemonic: item.title.includes('背誦口訣'),
+                    isGlossary: true,
+                    display: `解釋名詞 - ${item.title}`, 
+                    cardId: `q-${q.id}`, 
+                    answerId: `ans-${q.id}-${index}` 
+                });
             });
             playerState.playlist.push({ id: q.id, chunks: chunks });
         });
@@ -156,7 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Speak
-        let textToSpeak = chunk.text.replace(/\*/g, '');
+        let textToSpeak = "";
+        let isSkeleton = document.body.classList.contains('skeleton-mode');
+        
+        if (chunk.isHeader) {
+            textToSpeak = chunk.text;
+        } else {
+            if (isSkeleton && !chunk.isGlossary && !chunk.isMnemonic) {
+                textToSpeak = chunk.titleText; // 只唸標題
+            } else {
+                textToSpeak = chunk.titleText + chunk.detailText; // 全部唸出
+            }
+        }
+        textToSpeak = textToSpeak.replace(/\*/g, '');
+
         playerState.utterance = new SpeechSynthesisUtterance(textToSpeak);
         playerState.utterance.lang = 'zh-TW';
         playerState.utterance.rate = 1.0;
@@ -281,6 +323,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 answerItem.className = 'answer-item';
                 if (item.title.includes('背誦口訣')) {
                     answerItem.classList.add('is-mnemonic');
+                }
+                if (q.id.startsWith('G')) {
+                    answerItem.classList.add('is-glossary');
                 }
                 answerItem.id = `ans-${q.id}-${index}`;
                 const answerHeader = document.createElement('div');
