@@ -65,7 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Audio Player Logic ---
     function stopAudio() {
-        if (window.speechSynthesis.speaking) {
+        if (playerState.utterance) {
+            playerState.utterance.onend = null;
+            playerState.utterance.onerror = null;
+        }
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
             window.speechSynthesis.cancel();
         }
         playerState.isPlaying = false;
@@ -79,7 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playChunk() {
-        if (window.speechSynthesis.speaking) {
+        if (playerState.utterance) {
+            playerState.utterance.onend = null;
+            playerState.utterance.onerror = null;
+        }
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
             window.speechSynthesis.cancel();
         }
 
