@@ -239,7 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.className = 'nav-link';
             a.href = `#q-${q.id}`;
-            a.textContent = `${prefix} ${q.id.replace('G','')} 題`;
+            let iconHtml = q.badge ? `<i class="fa-solid fa-fire" style="color:#fbbf24; margin-right:4px;"></i> ` : '';
+            a.innerHTML = `${iconHtml}${prefix} ${q.id.replace('G','')} 題`;
             
             a.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -270,7 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
             card.id = `q-${q.id}`;
             const header = document.createElement('div');
             header.className = 'card-header';
-            header.innerHTML = `<h2 class="card-title">${q.question}</h2>`;
+            let badgeHtml = q.badge ? `<span class="teacher-badge">${q.badge}</span> ` : '';
+            header.innerHTML = `<h2 class="card-title">${badgeHtml}${q.question}</h2>`;
             card.appendChild(header);
             const answersList = document.createElement('div');
             answersList.className = 'answers-list';

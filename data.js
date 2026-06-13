@@ -31,6 +31,7 @@ const qaData = [
     },
     {
         "id": "2",
+        "badge": "🔥 必考重點",
         "question": "2. 克特李溫與尼爾米勒所提出的四種衝突類型為何？",
         "items": [
             {
@@ -53,6 +54,7 @@ const qaData = [
     },
     {
         "id": "3",
+        "badge": "🔥 必考重點",
         "question": "3. 衝突的五種處理模式為何？",
         "items": [
             {
@@ -167,6 +169,7 @@ const qaData = [
     },
     {
         "id": "8",
+        "badge": "🔥 必考重點",
         "question": "8. 一般溝通的困難障礙有哪六種？",
         "items": [
             {
@@ -197,6 +200,7 @@ const qaData = [
     },
     {
         "id": "9",
+        "badge": "🔥 必考重點",
         "question": "9. 常見的印象性障礙有哪三種？",
         "items": [
             {
@@ -299,6 +303,7 @@ const qaData = [
     },
     {
         "id": "14",
+        "badge": "🔥 必考重點",
         "question": "14. 一般而言，上司與部屬之人際關係有哪四種特性？",
         "items": [
             {
@@ -339,6 +344,7 @@ const qaData = [
     },
     {
         "id": "16",
+        "badge": "🔥 必考重點",
         "question": "16. 如何與「不喜歡」的同事相處？",
         "items": [
             {
@@ -395,6 +401,7 @@ const qaData = [
     },
     {
         "id": "18",
+        "badge": "🔥 必考重點",
         "question": "18. 在工作中，擔任第一線角色的人員必須與外界人士接觸，請問有哪五項原則可作為增進商業關係的參考？",
         "items": [
             {
@@ -473,6 +480,7 @@ const qaData = [
     },
     {
         "id": "21",
+        "badge": "🔥 必考重點",
         "question": "21. 如何平衡職業與生活方式？",
         "items": [
             {
@@ -511,6 +519,7 @@ const qaData = [
     },
     {
         "id": "22",
+        "badge": "🔥 必考重點",
         "question": "22. 人際技能具有哪四方面的功能？ (人們選擇發展人際技能的原因)",
         "items": [
             {
@@ -559,6 +568,7 @@ const qaData = [
     },
     {
         "id": "24",
+        "badge": "🔥 必考重點",
         "question": "24. EQ (情緒智力) 的五大特徵為何？",
         "items": [
             {
@@ -693,6 +703,7 @@ const qaData = [
     },
     {
         "id": "29",
+        "badge": "🔥 必考重點",
         "question": "29. 人們常用來找尋職業領域的一些方法有哪些？",
         "items": [
             {
@@ -723,6 +734,7 @@ const qaData = [
     },
     {
         "id": "30",
+        "badge": "🔥 必考重點",
         "question": "30. 克服害羞的方法可以怎麼做？",
         "items": [
             {
@@ -798,6 +810,7 @@ const glossaryData = [
     },
     {
         "id": "G4",
+        "badge": "🔥 必考重點",
         "question": "4. 師徒關係與角色關係",
         "items": [
             {
@@ -854,6 +867,7 @@ const glossaryData = [
     },
     {
         "id": "G8",
+        "badge": "🔥 必考重點",
         "question": "8. 銘印現象",
         "items": [
             {
