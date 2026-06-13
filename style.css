@@ -365,6 +365,46 @@ body {
     text-align: justify;
 }
 
+/* Skeleton Mode */
+body.skeleton-mode .answer-item:not(.is-mnemonic) .answer-body {
+    display: none !important;
+}
+body.skeleton-mode .answer-item:not(.is-mnemonic) .toggle-icon {
+    display: none !important;
+}
+body.skeleton-mode .answer-item:not(.is-mnemonic) {
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Skeleton Toggle Button */
+.skeleton-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.skeleton-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.skeleton-toggle-btn.active {
+    background: rgba(251, 191, 36, 0.15);
+    border-color: #fbbf24;
+    color: #fbbf24;
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;

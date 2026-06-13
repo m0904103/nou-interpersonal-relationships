@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('nextBtn');
     const loopBtn = document.getElementById('loopBtn');
     const playerStatus = document.getElementById('playerStatus');
+    const skeletonToggleBtn = document.getElementById('skeletonToggleBtn');
 
     // --- State ---
     let playerState = {
@@ -21,6 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loopMode: 'all', // 'all' or 'single'
         utterance: null
     };
+
+    // --- Skeleton Mode Toggle ---
+    skeletonToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('skeleton-mode');
+        if (document.body.classList.contains('skeleton-mode')) {
+            skeletonToggleBtn.classList.add('active');
+        } else {
+            skeletonToggleBtn.classList.remove('active');
+        }
+    });
 
     // --- Mobile Menu Toggle ---
     mobileMenuBtn.addEventListener('click', () => {
@@ -266,6 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
             q.items.forEach((item, index) => {
                 const answerItem = document.createElement('div');
                 answerItem.className = 'answer-item';
+                if (item.title.includes('背誦口訣')) {
+                    answerItem.classList.add('is-mnemonic');
+                }
                 answerItem.id = `ans-${q.id}-${index}`;
                 const answerHeader = document.createElement('div');
                 answerHeader.className = 'answer-header';
