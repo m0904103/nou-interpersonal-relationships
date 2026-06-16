@@ -216,7 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         textToSpeak = textToSpeak.replace(/\*/g, '');
-
+        // Remove page numbers like (P.186), (p.213), or (PP.217~219) to avoid distracting audio
+        textToSpeak = textToSpeak.replace(/\s*\([Pp]+\.?[\d~～\-\s]+\)/gi, '');
         playerState.utterance = new SpeechSynthesisUtterance(textToSpeak);
         playerState.utterance.lang = 'zh-TW';
         playerState.utterance.rate = playerState.playbackSpeed;

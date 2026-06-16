@@ -231,6 +231,13 @@ body {
     font-size: 1.1rem;
 }
 
+.stat-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .stat-badge {
     background: rgba(67, 97, 238, 0.1);
     color: var(--accent-color);
