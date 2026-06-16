@@ -216,8 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         textToSpeak = textToSpeak.replace(/\*/g, '');
-        // Remove page numbers like (P.186), (p.213), or (PP.217~219) to avoid distracting audio
+        // Remove page numbers like (P.186), (p.213), or (PP.217~219)
         textToSpeak = textToSpeak.replace(/\s*\([Pp]+\.?[\d~～\-\s]+\)/gi, '');
+        // Remove emojis to avoid the TTS engine reading "表情符號"
+        textToSpeak = textToSpeak.replace(/\p{Emoji_Presentation}/gu, '');
         playerState.utterance = new SpeechSynthesisUtterance(textToSpeak);
         playerState.utterance.lang = 'zh-TW';
         playerState.utterance.rate = playerState.playbackSpeed;
