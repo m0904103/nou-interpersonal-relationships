@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
             a.className = 'nav-link';
             a.href = `#q-${q.id}`;
             let iconHtml = q.badge ? `<i class="fa-solid fa-fire" style="color:#fbbf24; margin-right:4px;"></i> ` : '';
-            a.innerHTML = `${iconHtml}${prefix} ${q.id.replace('G','')} 題`;
+            a.innerHTML = `${iconHtml}${q.question}`;
             
             a.addEventListener('click', (e) => {
                 e.preventDefault();
