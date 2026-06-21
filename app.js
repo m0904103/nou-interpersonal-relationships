@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             q.items.forEach((item, index) => {
                 let cTitle = `第${index + 1}點：${item.title}。`;
-                let cDetail = item.detail ? `。課本解釋：${item.detail}` : '';
+                let cDetail = item.detail ? `。${item.detail}` : '';
                 chunks.push({ 
                     isHeader: false,
                     titleText: cTitle,
@@ -216,8 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         textToSpeak = textToSpeak.replace(/\*/g, '');
-        // Remove page numbers like (P.186), (p.213), or (PP.217~219)
-        textToSpeak = textToSpeak.replace(/\s*\([Pp]+\.?[\d~～\-\s]+\)/gi, '');
+        // Remove page numbers and anything inside parentheses
+        textToSpeak = textToSpeak.replace(/\s*[\(（][A-Za-z0-9\s\.\-~～]+[\)）]/gi, '');
+        // Aggressively strip all remaining English characters
+        textToSpeak = textToSpeak.replace(/[a-zA-Z]/g, '');
         // Remove emojis to avoid the TTS engine reading "表情符號"
         textToSpeak = textToSpeak.replace(/\p{Emoji_Presentation}/gu, '');
         playerState.utterance = new SpeechSynthesisUtterance(textToSpeak);
